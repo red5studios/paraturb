@@ -62,4 +62,15 @@ describe 'paraturb tickets' do
 
 		response.should == false
 	end
+
+	it "should be able to upload files" do
+		stub_request(:get, %r|#{@api_host}/api/v1/#{@account_id}/#{@dept_id}/Ticket/789.*|).to_return(:status => 200,:body => @parature_responses[:single_ticket])
+		stub_request(:get, %r|#{@api_host}/api/v1/#{@account_id}/#{@dept_id}/Ticket/upload.*|).to_return(:status => 200,:body => "<?xml version=\"1.0\"?>\n<Upload href='http://dummy.upload.url'></Upload>")
+		stub_request(:post, "http://dummy.upload.url").to_return(:status => 200,:body => "<?xml version=\"1.0\"?>\n<result><passed><file><inputname>file</inputname><filename>MyAttachment.jpg</filename><guid>172abe4de93843debfa323976d8e1b91</guid></file></passed></result>")
+		stub_request(:put, %r|#{@api_host}/api/v1/#{@account_id}/#{@dept_id}/Ticket/789.*|).to_return(:status => 200,:body => @parature_responses[:create_success])
+
+		response = @parature.add_attachment(789,"attachment.txt","TESTDATA")
+		response.should_not == false
+		response.attributes['id'].value.to_i.should == 789
+	end
 end
