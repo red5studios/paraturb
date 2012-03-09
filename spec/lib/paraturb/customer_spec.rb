@@ -25,7 +25,7 @@ describe 'paraturb customers' do
 	end
 
 	it "should return false if a customer with a given id does not exist" do
-				stub_request(:get, %r|#{@api_host}/api/v1/#{@account_id}/#{@dept_id}/Customer/123.*|).to_return(:status => 200,:body => @parature_responses[:no_customers])
+		stub_request(:get, %r|#{@api_host}/api/v1/#{@account_id}/#{@dept_id}/Customer/123.*|).to_return(:status => 200,:body => @parature_responses[:no_customers])
 		response = @parature.customer(123)
 
 		response.should == false
