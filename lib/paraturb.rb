@@ -30,10 +30,8 @@ module Paraturb
 			request_url = "#{@api_host}/api/v1/#{@account_id}/#{@dept_id}/#{object_type}"
 
 			case operation
-				when "schema","status","view"
+				when "schema","status","view","upload"
 					request_url += "/#{operation}"
-				when "upload"
-					#TODO: Add upload post operation
 				else
 					request_url += "/"
 					request_url += "#{object_id}" if object_id
@@ -60,9 +58,11 @@ module Paraturb
 
 			case method
 				when 'post'
-					@http_response = Curl::Easy.http_post(request_url(options),options[:post])
+					@http_response = Curl::Easy.new(request_url(options))
+					@http_response.http_post(options[:post])
 				when 'put'
-					@http_response = Curl::Easy.http_put(request_url(options),options[:put])
+					@http_response = Curl::Easy.new(request_url(options))
+					@http_response.http_put(options[:put])
 				when 'delete'
 					@http_response = Curl::Easy.http_delete(request_url(options))
 				else #get
