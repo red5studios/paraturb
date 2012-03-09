@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'paraturb'
-  s.version     = '1.0.0'
+  s.version     = '1.0.1'
   s.summary     = "CURB-based Parature API wrapper"
   s.description = ""
   s.authors     = ["Jason Smith"]
